@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.KepuzhishiCollectionDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.kepuzhishi_id as kepuzhishiId
+        ,a.yonghu_id as yonghuId
+        ,a.kepuzhishi_collection_types as kepuzhishiCollectionTypes
+        ,a.insert_time as insertTime
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.KepuzhishiCollectionView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        <!-- 级联表的字段 -->
+        ,kepuzhishi.kepuzhishi_name as kepuzhishiName
+        ,kepuzhishi.kepuzhishi_photo as kepuzhishiPhoto
+        ,kepuzhishi.kepuzhishi_types as kepuzhishiTypes
+        ,kepuzhishi.kepuzhishi_video as kepuzhishiVideo
+        ,kepuzhishi.zan_number as zanNumber
+        ,kepuzhishi.cai_number as caiNumber
+        ,kepuzhishi.kepuzhishi_content as kepuzhishiContent
+        ,kepuzhishi.kepuzhishi_delete as kepuzhishiDelete
+        ,yonghu.yonghu_name as yonghuName
+        ,yonghu.yonghu_phone as yonghuPhone
+        ,yonghu.yonghu_id_number as yonghuIdNumber
+        ,yonghu.yonghu_photo as yonghuPhoto
+        ,yonghu.yonghu_email as yonghuEmail
+
+        FROM kepuzhishi_collection  a
+        left JOIN kepuzhishi kepuzhishi ON a.kepuzhishi_id = kepuzhishi.id
+        left JOIN yonghu yonghu ON a.yonghu_id = yonghu.id
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test="params.kepuzhishiId != null and params.kepuzhishiId != ''">
+                and (
+                    a.kepuzhishi_id = #{params.kepuzhishiId}
+                )
+            </if>
+            <if test="params.yonghuId != null and params.yonghuId != ''">
+                and (
+                    a.yonghu_id = #{params.yonghuId}
+                )
+            </if>
+            <if test="params.kepuzhishiCollectionTypes != null and params.kepuzhishiCollectionTypes != ''">
+                and a.kepuzhishi_collection_types = #{params.kepuzhishiCollectionTypes}
+            </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+
+                <!-- 判断健康科普的id不为空 -->
+            <if test=" params.kepuzhishiIdNotNull != '' and params.kepuzhishiIdNotNull != null and params.kepuzhishiIdNotNull != 'null' ">
+                and a.kepuzhishi_id IS NOT NULL
+            </if>
+            <if test=" params.kepuzhishiName != '' and params.kepuzhishiName != null and params.kepuzhishiName != 'null' ">
+                and kepuzhishi.kepuzhishi_name like CONCAT('%',#{params.kepuzhishiName},'%')
+            </if>
+            <if test="params.kepuzhishiTypes != null  and params.kepuzhishiTypes != ''">
+                and kepuzhishi.kepuzhishi_types = #{params.kepuzhishiTypes}
+            </if>
+
+            <if test=" params.kepuzhishiVideo != '' and params.kepuzhishiVideo != null and params.kepuzhishiVideo != 'null' ">
+                and kepuzhishi.kepuzhishi_video like CONCAT('%',#{params.kepuzhishiVideo},'%')
+            </if>
+            <if test="params.zanNumberStart != null  and params.zanNumberStart != '' ">
+                <![CDATA[  and kepuzhishi.zan_number >= #{params.zanNumberStart}   ]]>
+            </if>
+            <if test="params.zanNumberEnd != null  and params.zanNumberEnd != '' ">
+                <![CDATA[  and kepuzhishi.zan_number <= #{params.zanNumberEnd}   ]]>
+            </if>
+            <if test="params.zanNumber != null  and params.zanNumber != '' ">
+                and kepuzhishi.zan_number = #{params.zanNumber}
+            </if>
+            <if test="params.caiNumberStart != null  and params.caiNumberStart != '' ">
+                <![CDATA[  and kepuzhishi.cai_number >= #{params.caiNumberStart}   ]]>
+            </if>
+            <if test="params.caiNumberEnd != null  and params.caiNumberEnd != '' ">
+                <![CDATA[  and kepuzhishi.cai_number <= #{params.caiNumberEnd}   ]]>
+            </if>
+            <if test="params.caiNumber != null  and params.caiNumber != '' ">
+                and kepuzhishi.cai_number = #{params.caiNumber}
+            </if>
+            <if test=" params.kepuzhishiContent != '' and params.kepuzhishiContent != null and params.kepuzhishiContent != 'null' ">
+                and kepuzhishi.kepuzhishi_content like CONCAT('%',#{params.kepuzhishiContent},'%')
+            </if>
+            <if test="params.kepuzhishiDeleteStart != null  and params.kepuzhishiDeleteStart != '' ">
+                <![CDATA[  and kepuzhishi.kepuzhishi_delete >= #{params.kepuzhishiDeleteStart}   ]]>
+            </if>
+            <if test="params.kepuzhishiDeleteEnd != null  and params.kepuzhishiDeleteEnd != '' ">
+                <![CDATA[  and kepuzhishi.kepuzhishi_delete <= #{params.kepuzhishiDeleteEnd}   ]]>
+            </if>
+            <if test="params.kepuzhishiDelete != null  and params.kepuzhishiDelete != '' ">
+                and kepuzhishi.kepuzhishi_delete = #{params.kepuzhishiDelete}
+            </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(kepuzhishi.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(kepuzhishi.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+                <!-- 判断用户的id不为空 -->
+            <if test=" params.yonghuIdNotNull != '' and params.yonghuIdNotNull != null and params.yonghuIdNotNull != 'null' ">
+                and a.yonghu_id IS NOT NULL
+            </if>
+            <if test=" params.yonghuName != '' and params.yonghuName != null and params.yonghuName != 'null' ">
+                and yonghu.yonghu_name like CONCAT('%',#{params.yonghuName},'%')
+            </if>
+            <if test=" params.yonghuPhone != '' and params.yonghuPhone != null and params.yonghuPhone != 'null' ">
+                and yonghu.yonghu_phone like CONCAT('%',#{params.yonghuPhone},'%')
+            </if>
+            <if test=" params.yonghuIdNumber != '' and params.yonghuIdNumber != null and params.yonghuIdNumber != 'null' ">
+                and yonghu.yonghu_id_number like CONCAT('%',#{params.yonghuIdNumber},'%')
+            </if>
+            <if test=" params.yonghuEmail != '' and params.yonghuEmail != null and params.yonghuEmail != 'null' ">
+                and yonghu.yonghu_email like CONCAT('%',#{params.yonghuEmail},'%')
+            </if>
+        </where>
+        order by a.${params.sort} ${params.order}
+    </select>
+
+</mapper>

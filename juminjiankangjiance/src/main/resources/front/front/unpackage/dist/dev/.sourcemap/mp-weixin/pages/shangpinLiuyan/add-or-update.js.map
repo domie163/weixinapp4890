@@ -1,0 +1,1 @@
+{"version":3,"sources":["uni-app:///main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;AACA;AACA,oH;AACAA,UAAU,CAACC,oBAAD,CAAV,C","file":"pages/shangpinLiuyan/add-or-update.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/shangpinLiuyan/add-or-update.vue'\ncreatePage(Page)"],"sourceRoot":""}

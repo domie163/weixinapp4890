@@ -1,0 +1,1 @@
+{"version":3,"sources":["uni-app:///main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;AACA;AACA,yG;AACAA,UAAU,CAACC,aAAD,CAAV,C","file":"pages/shangpinCollection/list2.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/shangpinCollection/list2.vue'\ncreatePage(Page)"],"sourceRoot":""}

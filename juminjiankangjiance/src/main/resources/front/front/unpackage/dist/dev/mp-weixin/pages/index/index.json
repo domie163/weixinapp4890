@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#276ace",
+  "navigationBarTextStyle": "white",
+  "navigationBarTitleText": "居民健康监测系统首页",
+  "usingComponents": {
+    "uni-icons": "/components/uni-ui/lib/uni-icons/uni-icons"
+  }
+}

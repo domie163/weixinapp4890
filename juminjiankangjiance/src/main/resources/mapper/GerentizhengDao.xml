@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.GerentizhengDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.gerentizheng_name as gerentizhengName
+        ,a.gerentizheng_xieya as gerentizhengXieya
+        ,a.gerentizheng_xietang as gerentizhengXietang
+        ,a.gerentizheng_types as gerentizhengTypes
+        ,a.gerentizheng_shengao as gerentizhengShengao
+        ,a.gerentizheng_tizhong as gerentizhengTizhong
+        ,a.gerentizheng_tiwen as gerentizhengTiwen
+        ,a.gerentizheng_bushu as gerentizhengBushu
+        ,a.gerentizheng_shilil as gerentizhengShilil
+        ,a.gerentizheng_shilir as gerentizhengShilir
+        ,a.gerentizheng_file as gerentizhengFile
+        ,a.gerentizheng_time as gerentizhengTime
+        ,a.yonghu_id as yonghuId
+        ,a.gerentizheng_text as gerentizhengText
+        ,a.insert_time as insertTime
+        ,a.gerentizheng_delete as gerentizhengDelete
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.GerentizhengView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        <!-- 级联表的字段 -->
+        ,yonghu.yonghu_name as yonghuName
+        ,yonghu.yonghu_phone as yonghuPhone
+        ,yonghu.yonghu_id_number as yonghuIdNumber
+        ,yonghu.yonghu_photo as yonghuPhoto
+        ,yonghu.yonghu_email as yonghuEmail
+
+        FROM gerentizheng  a
+        left JOIN yonghu yonghu ON a.yonghu_id = yonghu.id
+
+        <where>
+            <if test="params.ids != null">
+                and a.id in
+                <foreach item="item" index="index" collection="params.ids" open="(" separator="," close=")">
+                #{item}
+                </foreach>
+            </if>
+            <if test=" params.gerentizhengName != '' and params.gerentizhengName != null and params.gerentizhengName != 'null' ">
+                and a.gerentizheng_name like CONCAT('%',#{params.gerentizhengName},'%')
+            </if>
+            <if test="params.gerentizhengXieyaStart != null and params.gerentizhengXieyaStart != ''">
+                <![CDATA[  and a.gerentizheng_xieya >= #{params.gerentizhengXieyaStart}   ]]>
+            </if>
+            <if test="params.gerentizhengXieyaEnd != null and params.gerentizhengXieyaEnd != ''">
+                <![CDATA[  and a.gerentizheng_xieya <= #{params.gerentizhengXieyaEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengXieya != null and params.gerentizhengXieya != ''">
+                and a.gerentizheng_xieya = #{params.gerentizhengXieya}
+             </if>
+            <if test="params.gerentizhengXietangStart != null and params.gerentizhengXietangStart != ''">
+                <![CDATA[  and a.gerentizheng_xietang >= #{params.gerentizhengXietangStart}   ]]>
+            </if>
+            <if test="params.gerentizhengXietangEnd != null and params.gerentizhengXietangEnd != ''">
+                <![CDATA[  and a.gerentizheng_xietang <= #{params.gerentizhengXietangEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengXietang != null and params.gerentizhengXietang != ''">
+                and a.gerentizheng_xietang = #{params.gerentizhengXietang}
+             </if>
+            <if test="params.gerentizhengTypes != null and params.gerentizhengTypes != ''">
+                and a.gerentizheng_types = #{params.gerentizhengTypes}
+            </if>
+            <if test="params.gerentizhengShengaoStart != null and params.gerentizhengShengaoStart != ''">
+                <![CDATA[  and a.gerentizheng_shengao >= #{params.gerentizhengShengaoStart}   ]]>
+            </if>
+            <if test="params.gerentizhengShengaoEnd != null and params.gerentizhengShengaoEnd != ''">
+                <![CDATA[  and a.gerentizheng_shengao <= #{params.gerentizhengShengaoEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengShengao != null and params.gerentizhengShengao != ''">
+                and a.gerentizheng_shengao = #{params.gerentizhengShengao}
+             </if>
+            <if test="params.gerentizhengTizhongStart != null and params.gerentizhengTizhongStart != ''">
+                <![CDATA[  and a.gerentizheng_tizhong >= #{params.gerentizhengTizhongStart}   ]]>
+            </if>
+            <if test="params.gerentizhengTizhongEnd != null and params.gerentizhengTizhongEnd != ''">
+                <![CDATA[  and a.gerentizheng_tizhong <= #{params.gerentizhengTizhongEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengTizhong != null and params.gerentizhengTizhong != ''">
+                and a.gerentizheng_tizhong = #{params.gerentizhengTizhong}
+             </if>
+            <if test="params.gerentizhengTiwenStart != null and params.gerentizhengTiwenStart != ''">
+                <![CDATA[  and a.gerentizheng_tiwen >= #{params.gerentizhengTiwenStart}   ]]>
+            </if>
+            <if test="params.gerentizhengTiwenEnd != null and params.gerentizhengTiwenEnd != ''">
+                <![CDATA[  and a.gerentizheng_tiwen <= #{params.gerentizhengTiwenEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengTiwen != null and params.gerentizhengTiwen != ''">
+                and a.gerentizheng_tiwen = #{params.gerentizhengTiwen}
+             </if>
+            <if test="params.gerentizhengBushuStart != null and params.gerentizhengBushuStart != ''">
+                <![CDATA[  and a.gerentizheng_bushu >= #{params.gerentizhengBushuStart}   ]]>
+            </if>
+            <if test="params.gerentizhengBushuEnd != null and params.gerentizhengBushuEnd != ''">
+                <![CDATA[  and a.gerentizheng_bushu <= #{params.gerentizhengBushuEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengBushu != null and params.gerentizhengBushu != ''">
+                and a.gerentizheng_bushu = #{params.gerentizhengBushu}
+             </if>
+            <if test="params.gerentizhengShililStart != null and params.gerentizhengShililStart != ''">
+                <![CDATA[  and a.gerentizheng_shilil >= #{params.gerentizhengShililStart}   ]]>
+            </if>
+            <if test="params.gerentizhengShililEnd != null and params.gerentizhengShililEnd != ''">
+                <![CDATA[  and a.gerentizheng_shilil <= #{params.gerentizhengShililEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengShilil != null and params.gerentizhengShilil != ''">
+                and a.gerentizheng_shilil = #{params.gerentizhengShilil}
+             </if>
+            <if test="params.gerentizhengShilirStart != null and params.gerentizhengShilirStart != ''">
+                <![CDATA[  and a.gerentizheng_shilir >= #{params.gerentizhengShilirStart}   ]]>
+            </if>
+            <if test="params.gerentizhengShilirEnd != null and params.gerentizhengShilirEnd != ''">
+                <![CDATA[  and a.gerentizheng_shilir <= #{params.gerentizhengShilirEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengShilir != null and params.gerentizhengShilir != ''">
+                and a.gerentizheng_shilir = #{params.gerentizhengShilir}
+             </if>
+            <if test=" params.gerentizhengTimeStart != '' and params.gerentizhengTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.gerentizheng_time) >= UNIX_TIMESTAMP(#{params.gerentizhengTimeStart}) ]]>
+            </if>
+            <if test=" params.gerentizhengTimeEnd != '' and params.gerentizhengTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.gerentizheng_time) <= UNIX_TIMESTAMP(#{params.gerentizhengTimeEnd}) ]]>
+            </if>
+            <if test="params.yonghuId != null and params.yonghuId != ''">
+                and (
+                    a.yonghu_id = #{params.yonghuId}
+                )
+            </if>
+            <if test=" params.gerentizhengText != '' and params.gerentizhengText != null and params.gerentizhengText != 'null' ">
+                and a.gerentizheng_text like CONCAT('%',#{params.gerentizhengText},'%')
+            </if>
+            <if test=" params.insertTimeStart != '' and params.insertTimeStart != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) >= UNIX_TIMESTAMP(#{params.insertTimeStart}) ]]>
+            </if>
+            <if test=" params.insertTimeEnd != '' and params.insertTimeEnd != null ">
+                <![CDATA[  and UNIX_TIMESTAMP(a.insert_time) <= UNIX_TIMESTAMP(#{params.insertTimeEnd}) ]]>
+            </if>
+            <if test="params.gerentizhengDeleteStart != null and params.gerentizhengDeleteStart != ''">
+                <![CDATA[  and a.gerentizheng_delete >= #{params.gerentizhengDeleteStart}   ]]>
+            </if>
+            <if test="params.gerentizhengDeleteEnd != null and params.gerentizhengDeleteEnd != ''">
+                <![CDATA[  and a.gerentizheng_delete <= #{params.gerentizhengDeleteEnd}   ]]>
+            </if>
+             <if test="params.gerentizhengDelete != null and params.gerentizhengDelete != ''">
+                and a.gerentizheng_delete = #{params.gerentizhengDelete}
+             </if>
+
+                <!-- 判断用户的id不为空 -->
+            <if test=" params.yonghuIdNotNull != '' and params.yonghuIdNotNull != null and params.yonghuIdNotNull != 'null' ">
+                and a.yonghu_id IS NOT NULL
+            </if>
+            <if test=" params.yonghuName != '' and params.yonghuName != null and params.yonghuName != 'null' ">
+                and yonghu.yonghu_name like CONCAT('%',#{params.yonghuName},'%')
+            </if>
+            <if test=" params.yonghuPhone != '' and params.yonghuPhone != null and params.yonghuPhone != 'null' ">
+                and yonghu.yonghu_phone like CONCAT('%',#{params.yonghuPhone},'%')
+            </if>
+            <if test=" params.yonghuIdNumber != '' and params.yonghuIdNumber != null and params.yonghuIdNumber != 'null' ">
+                and yonghu.yonghu_id_number like CONCAT('%',#{params.yonghuIdNumber},'%')
+            </if>
+            <if test=" params.yonghuEmail != '' and params.yonghuEmail != null and params.yonghuEmail != 'null' ">
+                and yonghu.yonghu_email like CONCAT('%',#{params.yonghuEmail},'%')
+            </if>
+        </where>
+        order by a.${params.sort} ${params.order}
+    </select>
+
+</mapper>
